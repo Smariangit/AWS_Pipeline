@@ -4,77 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mileage Calculator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
-        }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            width: 100%;
-            border-radius: 5px;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        .result {
-            margin-top: 15px;
-            font-size: 1.2em;
-        }
-    </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Mileage Calculator 2.0</h2>
-        <input type="number" id="distance" placeholder="Distance traveled (km/miles)" />
-        <input type="number" id="fuel" placeholder="Fuel used (liters/gallons)" />
-        <input type="number" id="fuelCost" placeholder="Fuel cost per unit (optional)" />
-        <button onclick="calculateMileage()">Calculate</button>
-        <div class="result" id="result"></div>
-    </div>
-
-    <script>
-        function calculateMileage() {
-            let distance = parseFloat(document.getElementById('distance').value);
-            let fuel = parseFloat(document.getElementById('fuel').value);
-            let fuelCost = parseFloat(document.getElementById('fuelCost').value);
-            let resultDiv = document.getElementById('result');
-
-            if (!distance || !fuel || fuel === 0) {
-                resultDiv.innerHTML = "Please enter valid distance and fuel values.";
-                return;
-            }
-
-            let mileage = (distance / fuel).toFixed(2);
-            let tripCost = fuelCost ? (fuel * fuelCost).toFixed(2) : null;
-
-            resultDiv.innerHTML = `<p>Mileage: <strong>${mileage}</strong> km/l or mi/gal</p>`;
-            if (tripCost) {
-                resultDiv.innerHTML += `<p>Trip Cost: <strong>₹${tripCost}</strong></p>`;
-            }
-        }
-    </script>
+    <h2>Mileage Calculator</h2>
+    <form id="mileage-form">
+        <label for="distance">Distance (km):</label>
+        <input type="number" id="distance" required>
+        <label for="fuel">Fuel Used (liters):</label>
+        <input type="number" id="fuel" required>
+        <button type="submit">Calculate</button>
+    </form>
+    <p id="result"></p>
+ 
+    <script src="script.js"></script>
 </body>
 </html>

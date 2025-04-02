@@ -1,0 +1,39 @@
+name: Deploy to AWS Elastic Beanstalk
+ 
+on:
+  push:
+    branches:
+      - main  # Change this if your branch name is different
+ 
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+ 
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+ 
+      - name: Install AWS CLI
+        run: sudo apt-get install -y awscli
+ 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+ 
+      - name: Package Files for Deployment
+run: zip -r deploy.zip . -x "*.git*" # Exclude git files
+ 
+      - name: Upload to Elastic Beanstalk
+        run: |
+          aws elasticbeanstalk create-application-version \
+            --application-name ${{ secrets.EB_APPLICATION_NAME }} \
+            --version-label "v${{ github.run_number }}" \
+--source-bundle S3Bucket="elasticbeanstalk-${{ secrets.AWS_REGION }}-123456789012",S3Key="deploy.zip"
+ 
+          aws elasticbeanstalk update-environment \
+            --application-name ${{ secrets.EB_APPLICATION_NAME }} \
+            --environment-name ${{ secrets.EB_ENVIRONMENT_NAME }} \
+            --version-label "v${{ github.run_number }}"
